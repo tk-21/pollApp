@@ -5,7 +5,7 @@
         id: <input type="text" name="id" id="">
     </div>
     <div>
-        pw: <input type="text" name="pwd" id="">
+        pw: <input type="password" name="pwd" id="">
     </div>
     <div>
         <input type="submit" value="ログイン">
