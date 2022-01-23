@@ -5,7 +5,8 @@ namespace lib;
 
 use db\UserQuery;
 
-class Auth {
+class Auth
+{
     public static function login($id, $pwd)
     {
         // 関数の実行結果を入れる値。ログインが成功したときはtrueを入れる
@@ -32,7 +33,21 @@ class Auth {
         return $is_success;
     }
 
+
+    public static function regist($id, $pwd, $nickname)
+    {
+        // 処理が成功したかどうかのフラグ。初期値はfalse。ログインが成功したときはtrueを入れる
+        $is_success = false;
+
+        // まずは同じユーザーが存在するかどうかの確認。idでユーザーが取れてくるかどうか
+        $exist_user = UserQuery::fetchById($id);
+        if (!empty($exist_user)) {
+            echo 'すでにユーザーが存在します。';
+            return false;
+        }
+
+        $is_success = UserQuery::insert($id, $pwd, $nickname);
+
+        return $is_success;
+    }
 }
-
-
-?>
