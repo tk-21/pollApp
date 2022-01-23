@@ -31,6 +31,7 @@ class DataSource
         $stmt = $this->executeSql($sql, $params);
         // typeがclsで渡ってきたら、フェッチモードをFETCH_CLASSに、それ以外の場合はFETCH_ASSOCにする
         if ($type === static::CLS) {
+            // FETCH_CLASSを使うと、指定したクラスのプロパティにカラムの値を代入できる。一致するプロパティが存在しない場合は、そのプロパティが作成される。
             return $stmt->fetchAll(PDO::FETCH_CLASS, $cls);
         } else {
             // 上でデフォルトモードを連想配列に設定しているので改めてPDO::FETCH_ASSOC記述しなくてもよい
