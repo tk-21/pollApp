@@ -74,7 +74,7 @@ class DataSource
     {
         // $sqlで渡ってきたsqlを渡してprepareを実行
         $stmt = $this->conn->prepare($sql);
-        // $paramsで渡ってきた配列を渡して実行し、$sqlResultに格納
+        // $paramsで渡ってきた配列を渡して実行し、結果を$sqlResultに代入（成功すればtrue）
         $this->sqlResult = $stmt->execute($params);
         // ステートメントを返す
         return $stmt;
