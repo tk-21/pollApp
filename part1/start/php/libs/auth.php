@@ -4,6 +4,7 @@
 namespace lib;
 
 use db\UserQuery;
+use model\UserModel;
 
 class Auth
 {
@@ -33,20 +34,25 @@ class Auth
         return $is_success;
     }
 
-
-    public static function regist($id, $pwd, $nickname)
+    // POSTで送られてきた値が入ったUserオブジェクト($user)が引数で渡ってくる
+    public static function regist($user)
     {
         // 処理が成功したかどうかのフラグ。初期値はfalse。ログインが成功したときはtrueを入れる
         $is_success = false;
 
         // まずは同じユーザーが存在するかどうかの確認。idでユーザーが取れてくるかどうか
-        $exist_user = UserQuery::fetchById($id);
+        $exist_user = UserQuery::fetchById($user->id);
         if (!empty($exist_user)) {
             echo 'すでにユーザーが存在します。';
             return false;
         }
 
-        $is_success = UserQuery::insert($id, $pwd, $nickname);
+        // 登録が成功すれば$is_successにtrueが入る
+        $is_success = UserQuery::insert($user);
+
+        if ($is_success) {
+            $_SESSION['user'] = $user;
+        }
 
         return $is_success;
     }
