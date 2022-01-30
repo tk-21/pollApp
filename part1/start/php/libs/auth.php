@@ -23,7 +23,7 @@ class Auth
                 $is_success = true;
                 // セッションにもユーザーの情報を入れておく
                 // クラスから生成したオブジェクトもセッションに格納することができる
-                $_SESSION['user'] = $user;
+                UserModel::setSession($user);
             } else {
                 echo 'パスワードが一致しません。';
             }
@@ -51,9 +51,24 @@ class Auth
         $is_success = UserQuery::insert($user);
 
         if ($is_success) {
+            // setSessionにuserオブジェクトを渡す
+            // スーパーグローバルには何らかの共通したメソッドからアクセスするようにする
+            UserModel::setSession($user);
             $_SESSION['user'] = $user;
         }
 
         return $is_success;
+    }
+
+    // ログインしているかどうかを判定する
+    public static function isLogin()
+    {
+        $user = UserModel::getSession();
+
+        if (isset($user)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
