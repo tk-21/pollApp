@@ -54,7 +54,7 @@ class Auth
             // setSessionにuserオブジェクトを渡す
             // スーパーグローバルには何らかの共通したメソッドからアクセスするようにする
             UserModel::setSession($user);
-            $_SESSION['user'] = $user;
+            // $_SESSION['user'] = $user;
         }
 
         return $is_success;

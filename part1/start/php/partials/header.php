@@ -14,6 +14,9 @@
     <?php
 
     use lib\Auth;
+    use lib\Msg;
+
+    Msg::flush();
 
     if (Auth::isLogin()) {
         echo 'ログイン中です。';
