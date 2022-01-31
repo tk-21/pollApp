@@ -36,6 +36,10 @@ class Msg extends AbstractModel
         $msgs_with_type = static::getSessionAndFlush() ?? [];
 
         foreach ($msgs_with_type as $type => $msgs) {
+            // $typeにデバッグが回ってきたとき、falseだったら次のループにステップする
+            if ($type === static::DEBUG && !DEBUG) {
+                continue;
+            }
             foreach ($msgs as $msg) {
                 echo "<div>{$type}:{$msg}</div>";
             }

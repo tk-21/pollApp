@@ -18,6 +18,8 @@ function post()
     $id = get_param('id', '');
     $pwd = get_param('pwd', '');
 
+    Msg::push(Msg::DEBUG, 'デバッグメッセージです。');
+    
     if (Auth::login($id, $pwd)) {
         // ログインに成功したらセッションのINFOにメッセージを入れる
         Msg::push(Msg::INFO, '認証成功');
