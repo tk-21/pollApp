@@ -1,9 +1,13 @@
 <?php
+
+use lib\Msg;
+
 require_once 'config.php';
 
 // Library
 require_once SOURCE_BASE . 'libs/helper.php';
 require_once SOURCE_BASE . 'libs/auth.php';
+require_once SOURCE_BASE . 'libs/router.php';
 
 // model
 require_once SOURCE_BASE . 'models/abstract.model.php';
@@ -16,57 +20,29 @@ require_once SOURCE_BASE . 'libs/message.php';
 require_once SOURCE_BASE . 'db/datasource.php';
 require_once SOURCE_BASE . 'db/user.query.php';
 
+use function lib\route;
+
 session_start();
 
-// 部品を共通化する
-require_once SOURCE_BASE . 'partials/header.php';
+try {
+    // 部品を共通化する
+    require_once SOURCE_BASE . 'partials/header.php';
 
-// 動的にコントローラーを呼び出す
-// $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列を空文字で置き換える
-$rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
+    // 動的にコントローラーを呼び出す
+    // $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列を空文字で置き換える
+    $rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
 
-// リクエストメソッドを小文字に変換して取得
-$method = strtolower($_SERVER['REQUEST_METHOD']);
+    // リクエストメソッドを小文字に変換して取得
+    $method = strtolower($_SERVER['REQUEST_METHOD']);
 
-route($rpath, $method);
+    route($rpath, $method);
 
-
-function route($rpath, $method) //渡ってきたパスによって呼び出すコントローラーを変える
-{
-    // 何もなかったらhomeを入れる
-    if ($rpath === '') {
-        $rpath = 'home';
-    }
-
-    $targetFile = SOURCE_BASE . "controllers/{$rpath}.php";
-
-    if (!file_exists($targetFile)) {
-        require_once SOURCE_BASE . 'views/404.php';
-        return;
-        // returnを書くことで、これ以降のコードは見る必要がないということを伝えることができる
-    }
-
-    require_once $targetFile;
-
-    // パスとメソッドによって関数を呼び分ける
-    $fn = "\\controller\\{$rpath}\\{$method}";
-
-    // 文字列で定義したものであっても、関数が見つかれば、末尾に()をつけることによって実行できる
-    $fn();
+    require_once SOURCE_BASE . 'partials/footer.php';
+} catch (Throwable $e) {
+    // 処理を止める
+    die('<h1>何かがすごくおかしいようです。</h1>');
 }
 
-
-// パスとコントローラーの紐付け
-// if ($_SERVER['REQUEST_URI'] === '/poll/part1/start/login') {
-//     require_once SOURCE_BASE . 'controllers/login.php';
-// } elseif ($_SERVER['REQUEST_URI'] === '/poll/part1/start/register') {
-//     require_once SOURCE_BASE . 'controllers/register.php';
-// } elseif ($_SERVER['REQUEST_URI'] === '/poll/part1/start/') {
-//     require_once SOURCE_BASE . 'controllers/home.php';
-// }
-
-
-require_once SOURCE_BASE . 'partials/footer.php';
 
 
 
