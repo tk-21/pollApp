@@ -3,6 +3,7 @@
 namespace lib;
 
 use model\AbstractModel;
+use Throwable;
 
 class Msg extends AbstractModel
 {
@@ -32,17 +33,23 @@ class Msg extends AbstractModel
     // メッセージを表示するためのメソッド
     public static function flush()
     {
-        // とれてこなかったら空の配列を代入
-        $msgs_with_type = static::getSessionAndFlush() ?? [];
+        try {
+            // 何もとれてこなかったら空の配列を代入
+            $msgs_with_type = static::getSessionAndFlush() ?? [];
 
-        foreach ($msgs_with_type as $type => $msgs) {
-            // $typeにデバッグが回ってきたとき、falseだったら次のループにステップする
-            if ($type === static::DEBUG && !DEBUG) {
-                continue;
+            foreach ($msgs_with_type as $type => $msgs) {
+                // $typeにデバッグが回ってきたとき、falseだったら次のループにステップする
+                if ($type === static::DEBUG && !DEBUG) {
+                    continue;
+                }
+                foreach ($msgs as $msg) {
+                    echo "<div>{$type}:{$msg}</div>";
+                }
             }
-            foreach ($msgs as $msg) {
-                echo "<div>{$type}:{$msg}</div>";
-            }
+        } catch (Throwable $e) {
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            // メッセージを表示させて改修がしやすいようにしておく
+            Msg::push(Msg::ERROR, 'Msg::Flushで例外が発生しました。');
         }
     }
 
