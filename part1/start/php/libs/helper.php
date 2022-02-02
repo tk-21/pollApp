@@ -34,3 +34,8 @@ function get_url($path)
     // 両端にスラッシュが含まれていればトリミングする
     return BASE_CONTEXT_PATH . trim($path, '/');
 }
+
+// 小文字か大文字の半角英字もしくは数字にマッチするかどうかを判定するメソッド
+function is_alnum($val) {
+    return preg_match("/^[a-zA-Z0-9]+$/", $val);
+}

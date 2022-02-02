@@ -22,8 +22,10 @@ function post()
     // 引数をある特定のモデルとすることで引数の記述を簡略化できる
     // 引数が多くなる場合もあるので、モデル自体を渡してやるとスッキリする
     if (Auth::regist($user)) {
+        redirect(GO_HOME);
         echo '登録成功';
     } else {
+        redirect(GO_REFERER);
         echo '登録失敗';
     }
 }

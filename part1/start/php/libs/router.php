@@ -12,7 +12,7 @@ function route($rpath, $method)
     // try catchは影響範囲の大きいところから書いていく
     try {
         // この記述を入れるとcatchの方に飛ぶ
-        throw new Error();
+        // throw new Error();
 
         // 何もなかったらhomeを入れる
         if ($rpath === '') {

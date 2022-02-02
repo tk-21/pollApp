@@ -12,9 +12,20 @@ class Auth
     public static function login($id, $pwd)
     {
         try {
+            // ここはstaticのメソッドを使う
+            // バリデーションがどれか一つでもfalseで返ってきたら
+            if (
+                !(UserModel::validateId($id)
+                    * UserModel::validatePwd($pwd))
+            ) {
+                // 呼び出し元のregister.phpにfalseを返して登録失敗になる
+                return false;
+            }
+
             // 関数の実行結果を入れる値。ログインが成功したときはtrueを入れる
             $is_success = false;
 
+            // DBに接続する前にバリデーションは終わらせておく
             $user = UserQuery::fetchById($id);
 
             // idからユーザーが取れてきた場合、パスワードの確認（DBに登録されているパスワードとの照合）を行う
@@ -47,6 +58,19 @@ class Auth
     public static function regist($user)
     {
         try {
+            // DBに接続する前に必ずチェックは終わらせておく
+            // バリデーションがどれか一つでもfalseで返ってきたら
+            if (
+                // ()の中が０の場合にはtrueになり、if文の中が実行される
+                // trueまたはfalseを返すメソッドを*の演算子でつなげると、１または０に変換される。これらをすべて掛け合わせたときに結果が０であれば、どれかのチェックがfalseで返ってきたことになる
+                !($user->isValidId()
+                    * $user->isValidPwd()
+                    * $user->isValidNickname())
+            ) {
+                // 呼び出し元のregister.phpにfalseを返して登録失敗になる
+                return false;
+            }
+
             // 処理が成功したかどうかのフラグ。初期値はfalse。ログインが成功したときはtrueを入れる
             $is_success = false;
 
