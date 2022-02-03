@@ -30,6 +30,7 @@ abstract class AbstractModel
         return $_SESSION[static::$SESSION_NAME] ?? null;
     }
 
+    // セッションの値を空にする
     public static function clearSession()
     {
         static::setSession(null);

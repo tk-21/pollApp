@@ -4,7 +4,7 @@ namespace model;
 
 use lib\Msg;
 
-// データベースから取ってきたユーザー情報を格納するモデル
+// 基本的にはデータベースから取ってきたユーザー情報を格納するモデル
 class UserModel extends AbstractModel
 {
     public string $id;

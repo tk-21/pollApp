@@ -15,6 +15,7 @@ class UserQuery
         // 第2引数にパラメータに、引数で渡ってきた文字列を入れる
         // 第3引数でDataSource::CLSを指定することにより、クラスの形式でデータを取得
         // 第4引数でUserModelまでのパスを取得して、そのクラスを使うように指定
+        // ::classを使うことで、名前空間付きのクラスの完全修飾名を取得することができる（この場合は model\UserModel が返る）
         $result = $db->selectOne($sql, [
             ':id' => $id
         ], DataSource::CLS, UserModel::class);
