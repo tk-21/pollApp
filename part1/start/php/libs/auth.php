@@ -35,7 +35,7 @@ class Auth
                 if (password_verify($pwd, $user->pwd)) {
                     $is_success = true;
                     // セッションにもユーザーの情報を入れておく
-                    // クラスから生成したオブジェクトもセッションに格納することができる
+                    // クラスから生成したユーザー情報の入ったオブジェクトをセッションに格納
                     UserModel::setSession($user);
                 } else {
                     echo 'パスワードが一致しません。';
@@ -120,5 +120,21 @@ class Auth
         } else {
             return false;
         }
+    }
+
+    // ログアウトするメソッド
+    public static function logout()
+    {
+        try {
+            // ユーザープロパティのセッション情報が削除される
+            UserModel::clearSession();
+        } catch (Throwable $e) {
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            // 例外が発生した時点でfalseを返す
+            return false;
+        }
+
+        // 例外が発生しなかったらtrueを返す
+        return true;
     }
 }

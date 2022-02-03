@@ -14,6 +14,7 @@ class Msg extends AbstractModel
     public const INFO = 'info';
     public const DEBUG = 'debug';
 
+
     // セッションにメッセージを詰めるためのメソッド
     public static function push($type, $msg)
     {
@@ -29,6 +30,7 @@ class Msg extends AbstractModel
         // メッセージを格納した配列を$_SESSION['_msg']にセット
         static::setSession($msgs);
     }
+
 
     // メッセージを表示するためのメソッド
     public static function flush()
@@ -52,6 +54,7 @@ class Msg extends AbstractModel
             Msg::push(Msg::ERROR, 'Msg::Flushで例外が発生しました。');
         }
     }
+
 
     // セッションを初期化するメソッド
     private static function init()

@@ -16,6 +16,7 @@
     use lib\Auth;
     use lib\Msg;
 
+    // ここでメッセージをループで表示している
     Msg::flush();
 
     if (Auth::isLogin()) {
