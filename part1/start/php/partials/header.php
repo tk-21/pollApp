@@ -16,7 +16,7 @@
     use lib\Auth;
     use lib\Msg;
 
-    // ここでメッセージをループで表示している
+    // ここで$_SESSION['_msg']にセットされた配列の値をループで表示している
     Msg::flush();
 
     if (Auth::isLogin()) {
