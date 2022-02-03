@@ -25,7 +25,7 @@ class Msg extends AbstractModel
 
         // 初期化された配列を代入
         $msgs = static::getSession();
-        // 配列の種類に合わせてメッセージを格納
+        // 引数で渡ってきたタイプとメッセージを配列に格納
         $msgs[$type][] = $msg;
         // メッセージを格納した配列を$_SESSION['_msg']にセット
         static::setSession($msgs);
@@ -36,7 +36,7 @@ class Msg extends AbstractModel
     public static function flush()
     {
         try {
-            // 何もとれてこなかったら空の配列を代入
+            // もし何もとれてこなかったら空の配列を代入
             $msgs_with_type = static::getSessionAndFlush() ?? [];
 
             foreach ($msgs_with_type as $type => $msgs) {

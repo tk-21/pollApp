@@ -7,6 +7,7 @@ use lib\Msg;
 // 基本的にはデータベースから取ってきたユーザー情報を格納するモデル
 class UserModel extends AbstractModel
 {
+    // これらのプロパティに値を格納する
     public string $id;
     public string $pwd;
     public string $nickname;

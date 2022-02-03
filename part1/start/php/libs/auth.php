@@ -38,10 +38,10 @@ class Auth
                     // クラスから生成したユーザー情報の入ったオブジェクトをセッションに格納
                     UserModel::setSession($user);
                 } else {
-                    echo 'パスワードが一致しません。';
+                    Msg::push(Msg::ERROR, 'パスワードが一致しません。');
                 }
             } else {
-                echo 'ユーザーがみつかりません。';
+                Msg::push(Msg::ERROR, 'ユーザーがみつかりません。');
             }
         } catch (Throwable $e) {
             // 例外が発生した場合はfalseになるようにしておく
@@ -77,7 +77,7 @@ class Auth
             // まずは同じユーザーが存在するかどうかの確認。idでユーザーが取れてくるかどうか
             $exist_user = UserQuery::fetchById($user->id);
             if (!empty($exist_user)) {
-                echo 'すでにユーザーが存在します。';
+                Msg::push(Msg::ERROR, 'すでにユーザーが存在します。');
                 return false;
             }
 
@@ -85,10 +85,9 @@ class Auth
             $is_success = UserQuery::insert($user);
 
             if ($is_success) {
-                // setSessionにuserオブジェクトを渡す
+                // UserModelのsetSessionにuserオブジェクトを渡してセッションに情報をセットする
                 // スーパーグローバルには何らかの共通したメソッドからアクセスするようにする
                 UserModel::setSession($user);
-                // $_SESSION['user'] = $user;
             }
         } catch (Throwable $e) {
             // 例外が発生した場合はfalseになるようにしておく
