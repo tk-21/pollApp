@@ -29,6 +29,13 @@ function redirect($path)
     die();
 }
 
+// get_urlで取得したパスを画面表示するメソッド
+function the_url($path)
+{
+    echo get_url($path);
+}
+
+// 渡ってきた値のフルパスを取得するメソッド
 function get_url($path)
 {
     // 両端にスラッシュが含まれていればトリミングする
@@ -36,6 +43,7 @@ function get_url($path)
 }
 
 // 小文字か大文字の半角英字もしくは数字にマッチするかどうかを判定するメソッド
-function is_alnum($val) {
+function is_alnum($val)
+{
     return preg_match("/^[a-zA-Z0-9]+$/", $val);
 }

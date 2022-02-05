@@ -6,6 +6,7 @@ namespace controller\logout;
 use lib\Auth;
 use lib\Msg;
 
+// getでリクエストが来た場合
 function get()
 {
     // logoutメソッドでtrueが返ってきたらメッセージを格納する

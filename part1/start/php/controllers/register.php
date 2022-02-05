@@ -7,11 +7,13 @@ use lib\Auth;
 use lib\Msg;
 use model\UserModel;
 
+// getでリクエストが来た場合
 function get()
 {
     require_once SOURCE_BASE . 'views/register.php';
 }
 
+// postでリクエストが来た場合
 function post()
 {
     $user = new UserModel;

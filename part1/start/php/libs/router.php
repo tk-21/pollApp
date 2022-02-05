@@ -19,19 +19,24 @@ function route($rpath, $method)
             $rpath = 'home';
         }
 
+        // 渡ってきたパスによってコントローラー内のどれかのファイル名を取得
         $targetFile = SOURCE_BASE . "controllers/{$rpath}.php";
 
+        // ファイルが存在しなかったら404ページにとばす
         if (!file_exists($targetFile)) {
             require_once SOURCE_BASE . 'views/404.php';
             return;
             // returnを書くことで、これ以降のコードは見る必要がないということを伝えることができる
         }
 
+        // コントローラーの中のどれかのファイルを読み込む
         require_once $targetFile;
 
         // パスとメソッドによって関数を呼び分ける
+        // 渡ってきたパスとメソッドに応じてnamespace内の関数（getかpostか）を指定
         $fn = "\\controller\\{$rpath}\\{$method}";
 
+        // それを実行する
         // 文字列で定義したものであっても、関数が見つかれば、末尾に()をつけることによって実行できる
         $fn();
     } catch (Throwable $e) {
