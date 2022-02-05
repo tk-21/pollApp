@@ -9,11 +9,14 @@ use lib\Auth;
 use lib\Msg;
 use model\UserModel;
 
+// getでリクエストが来た場合
 function get()
 {
-    require_once SOURCE_BASE . 'views/login.php';
+    // namespace内の関数を呼び出す
+    \view\login\index();
 }
 
+// postでリクエストが来た場合
 function post()
 {
     $id = get_param('id', '');

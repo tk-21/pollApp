@@ -20,24 +20,35 @@ require_once SOURCE_BASE . 'libs/message.php';
 require_once SOURCE_BASE . 'db/datasource.php';
 require_once SOURCE_BASE . 'db/user.query.php';
 
+// partials
+require_once SOURCE_BASE . 'partials/header.php';
+require_once SOURCE_BASE . 'partials/footer.php';
+
+// View
+require_once SOURCE_BASE . 'views/login.php';
+
+
 use function lib\route;
 
 session_start();
 
 try {
-    // 部品を共通化する
-    require_once SOURCE_BASE . 'partials/header.php';
+    // ヘッダーとフッターを共通化して読み込み
+    \partials\header();
 
-    // 動的にコントローラーを呼び出す
+    // 動的にコントローラーを呼び出す処理
+
     // $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列を空文字で置き換える
     $rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
 
     // リクエストメソッドを小文字に変換して取得
     $method = strtolower($_SERVER['REQUEST_METHOD']);
 
+    // 渡すパスによって呼び出すコントローラーが変わる
+    // getかpostかによって実行されるメソッドが変わる
     route($rpath, $method);
 
-    require_once SOURCE_BASE . 'partials/footer.php';
+    \partials\footer();
 } catch (Throwable $e) {
     // 処理を止める
     die('<h1>何かがすごくおかしいようです。</h1>');
