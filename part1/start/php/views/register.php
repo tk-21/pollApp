@@ -25,7 +25,7 @@ function index()
                 </div>
                 <div class="form-group">
                     <label for="nickname">ニックネーム</label>
-                    <input id="nickname" type="password" name="nickname" class="form-control">
+                    <input id="nickname" type="text" name="nickname" class="form-control">
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
