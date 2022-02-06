@@ -10,7 +10,7 @@ use model\UserModel;
 // getでリクエストが来た場合
 function get()
 {
-    require_once SOURCE_BASE . 'views/register.php';
+    \view\register\index();
 }
 
 // postでリクエストが来た場合
