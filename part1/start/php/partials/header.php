@@ -31,12 +31,21 @@ function header()
                         <span class="h2 font-weight-bold mb-0">みんなのアンケート</span>
                     </a>
                     <div class="col-md-auto">
-                        <?php if (true) : ?>
+
+                        <?php //ユーザーから見えないようにするため、コメントを入れるときはphpタグで囲って入れる
+                        ?>
+                        <?php //ログインされていたらtrueが返ってくるので、if文の中が実行される
+                        ?>
+                        <?php if (Auth::isLogin()) : ?>
+                            <!-- ログインしているとき -->
+                            <a href="<?php the_url('topic/create'); ?>" class="btn btn-primary mr-2">投稿</a>
+                            <a href="<?php the_url('topic/archive'); ?>" class="mr-2">過去の投稿</a>
+                            <a href="<?php the_url('logout'); ?>">ログアウト</a>
+                        <?php else : ?>
                             <a href="<?php the_url('register'); ?>" class="btn btn-primary mr-2">登録</a>
                             <a href="<?php the_url('login'); ?>">ログイン</a>
-                        <?php else : ?>
-                            <!-- ログインしているとき -->
                         <?php endif; ?>
+
                     </div>
                 </nav>
             </header>

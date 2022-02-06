@@ -39,14 +39,20 @@ class Msg extends AbstractModel
             // もし何もとれてこなかったら空の配列を代入
             $msgs_with_type = static::getSessionAndFlush() ?? [];
 
+            echo '<div id="messages">';
             foreach ($msgs_with_type as $type => $msgs) {
                 // $typeにデバッグが回ってきたとき、falseだったら次のループにステップする
                 if ($type === static::DEBUG && !DEBUG) {
                     continue;
                 }
+
+                // メッセージのタイプによって色を変える処理
+                $color = $type === static::INFO ? 'alert-info' : 'alert-danger';
+
                 foreach ($msgs as $msg) {
-                    echo "<div>{$type}:{$msg}</div>";
+                    echo "<div class='alert $color'>{$msg}</div>";
                 }
+                echo '</div>';
             }
         } catch (Throwable $e) {
             Msg::push(Msg::DEBUG, $e->getMessage());
