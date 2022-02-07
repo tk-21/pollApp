@@ -136,4 +136,14 @@ class Auth
         // 例外が発生しなかったらtrueを返す
         return true;
     }
+
+    // ログインを促すメソッド
+    public static function requireLogin()
+    {
+        // もしログインしていない場合、メッセージを追加してログイン画面へリダイレクトさせる
+        if (!static::isLogin()) {
+            Msg::push(Msg::ERROR, 'ログインしてください。');
+            redirect('login');
+        }
+    }
 }
