@@ -22,18 +22,24 @@ function route($rpath, $method)
         // 渡ってきたパスによってコントローラー内のどれかのファイル名を取得
         $targetFile = SOURCE_BASE . "controllers/{$rpath}.php";
 
-        // ファイルが存在しなかったら404ページにとばす
+        // コントローラー内に指定されたファイルが存在しなかったら404ページにとばす
         if (!file_exists($targetFile)) {
             require_once SOURCE_BASE . 'views/404.php';
             return;
             // returnを書くことで、これ以降のコードは見る必要がないということを伝えることができる
         }
 
+        echo $rpath; //アクセスしているファイル
+
         // コントローラーの中のどれかのファイルを読み込む
         require_once $targetFile;
 
+        // 渡ってきたパス内にあるスラッシュをバックスラッシュに置き換える
+        $rpath = str_replace('/', '\\', $rpath);
+
         // パスとメソッドによって関数を呼び分ける
         // 渡ってきたパスとメソッドに応じてnamespace内の関数（getかpostか）を指定
+        // fnはfunctionの略
         $fn = "\\controller\\{$rpath}\\{$method}";
 
         // それを実行する

@@ -12,6 +12,7 @@ require_once SOURCE_BASE . 'libs/router.php';
 // model
 require_once SOURCE_BASE . 'models/abstract.model.php';
 require_once SOURCE_BASE . 'models/user.model.php';
+require_once SOURCE_BASE . 'models/topic.model.php';
 
 // Message
 require_once SOURCE_BASE . 'libs/message.php';
@@ -19,15 +20,19 @@ require_once SOURCE_BASE . 'libs/message.php';
 // DB
 require_once SOURCE_BASE . 'db/datasource.php';
 require_once SOURCE_BASE . 'db/user.query.php';
+require_once SOURCE_BASE . 'db/topic.query.php';
 
 // partials
+require_once SOURCE_BASE . 'partials/topic-list-item.php';
 require_once SOURCE_BASE . 'partials/header.php';
 require_once SOURCE_BASE . 'partials/footer.php';
 
 // View
 require_once SOURCE_BASE . 'views/login.php';
 require_once SOURCE_BASE . 'views/register.php';
+require_once SOURCE_BASE . 'views/topic/archive.php';
 
+// controllerのファイルはrouter.php内で自動的に読み込まれるので、ここに記述する必要はない
 
 use function lib\route;
 
@@ -39,7 +44,7 @@ try {
 
     // 動的にコントローラーを呼び出す処理
 
-    // $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列を空文字で置き換える
+    // $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列（start/までのURL）を空文字で置き換える
     $rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
 
     // リクエストメソッドを小文字に変換して取得

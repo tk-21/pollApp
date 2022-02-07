@@ -10,11 +10,12 @@ function get_param($key, $default_val, $is_post = true)
     $array = $is_post ? $_POST : $_GET;
     // 値が飛んでこなかった場合には$default_valを設定する
     // null合体演算子
-    // 非nullのときは第一オペランドの$_POST['id']を返し、nullのときは第二オペランドの空文字を返す
+    // 非nullのときは第一オペランドを返し、nullのときは第二オペランドを返す
     // 値が設定されているか確認して、設定されていなければ何らかの値を代入したいときに使う
     return $array[$key] ?? $default_val;
 }
 
+// 渡ってきた値が含まれるURLに遷移させるメソッド
 function redirect($path)
 {
     if ($path === GO_HOME) {
@@ -29,13 +30,13 @@ function redirect($path)
     die();
 }
 
-// get_urlで取得したパスを画面表示するメソッド
+// get_urlで取得したURLを画面表示するメソッド
 function the_url($path)
 {
     echo get_url($path);
 }
 
-// 渡ってきた値のフルパスを取得するメソッド
+// 渡ってきた値をstartまでのパスの後ろにつなげてURLを返すメソッド
 function get_url($path)
 {
     // 両端にスラッシュが含まれていればトリミングする
