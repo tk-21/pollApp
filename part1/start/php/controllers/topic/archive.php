@@ -18,6 +18,7 @@ function get()
     // ユーザーに紐付く記事を取得してくる
     $topics = TopicQuery::fetchByUserId($user);
 
+    // viewにあるメソッドを呼んでリストを表示する
     \view\topic\archive\index($topics);
     echo '<pre>', print_r($topics), '</pre>';
 }
