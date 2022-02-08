@@ -11,7 +11,10 @@ function index($topics)
         <?php
         // 一つずつの投稿がtopic_list_itemに渡って、リストが形成される
         foreach ($topics as $topic) {
-            \partials\topic_list_item($topic);
+            // idをキーにしてtopicの編集画面に飛ぶようにする
+            // このURLを引数として渡す
+            $url = get_url('topic/edit?topic_id=' . $topic->id);
+            \partials\topic_list_item($topic, $url);
         }
         ?>
     </ul>

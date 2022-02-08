@@ -19,7 +19,8 @@ class TopicQuery
         $db = new DataSource;
         // プリペアードステートメントを使うのでidはパラメータにしておく
         // delete_flgが１のものは取得しないようにして、論理的に無効なレコードは取得しないようにする
-        $sql = 'SELECT * FROM pollapp.topics WHERE user_id = :id and del_flg != 1;';
+        // order byで新しい記事から順に表示
+        $sql = 'SELECT * FROM pollapp.topics WHERE user_id = :id and del_flg != 1 order by id desc;';
         // 第2引数のパラメータに、引数で渡ってきた文字列を入れる
         // 第3引数でDataSource::CLSを指定することにより、クラスの形式でデータを取得
         // 第4引数でTopicModelまでのパスを取得して、そのクラスを使うように指定
