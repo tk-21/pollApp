@@ -26,6 +26,7 @@ class TopicQuery
         // 第4引数でTopicModelまでのパスを取得して、そのクラスを使うように指定
         // ::classを使うことで、名前空間付きのクラスの完全修飾名を取得することができる（この場合は model\TopicModel が返る）
         // ここはselectメソッドなので複数行取れてくる
+        // $resultにはオブジェクトの配列が格納される
         $result = $db->select($sql, [
             ':id' => $user->id
         ], DataSource::CLS, TopicModel::class);
