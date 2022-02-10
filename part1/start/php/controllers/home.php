@@ -1,7 +1,11 @@
 <?php
 namespace controller\home;
 
+use db\TopicQuery;
+
 // getでリクエストが来た場合
 function get() {
-    require_once SOURCE_BASE . 'views/home.php';
+
+    $topics = TopicQuery::fetchPublishedTopics();
+    \view\home\index($topics);
 }

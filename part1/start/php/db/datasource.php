@@ -9,9 +9,11 @@ class DataSource
 
     private $conn;
     private $sqlResult;
+
     // クラス内でなんらかのキーを使う場合は、静的プロパティとして定数を用意する
     public const CLS = 'cls';
 
+    // DB接続
     public function __construct($host = 'localhost', $port = '8889', $dbName = 'pollapp', $username = 'test_user', $password = 'pwd')
     {
 
@@ -25,6 +27,8 @@ class DataSource
         $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
 
+    // データを複数行取ってくるメソッド
+    // オブジェクト形式か連想配列形式かを第３引数で指定する。どちらかの形式で結果が帰ってくる
     public function select($sql = "", $params = [], $type = '', $cls = '')
     {
         $stmt = $this->executeSql($sql, $params);
@@ -39,6 +43,7 @@ class DataSource
     }
 
     // 更新系はこのメソッドを使う
+    // SQLを実行し、その結果をtrueかfalseで返すメソッド
     public function execute($sql = "", $params = [])
     {
         $this->executeSql($sql, $params);
@@ -46,6 +51,7 @@ class DataSource
         return  $this->sqlResult;
     }
 
+    // 取得した配列の１行目だけを返すメソッド
     public function selectOne($sql = "", $params = [], $type = '', $cls = '')
     {
         $result = $this->select($sql, $params, $type, $cls);
@@ -69,11 +75,12 @@ class DataSource
         $this->conn->rollback();
     }
 
+    // SQLを実行し、ステートメントを返すメソッド
     private function executeSql($sql, $params)
     {
         // $sqlで渡ってきたsqlを渡してprepareを実行
         $stmt = $this->conn->prepare($sql);
-        // $paramsで渡ってきた配列を渡して実行し、結果を$sqlResultに代入（成功すればtrue）
+        // $paramsで渡ってきた配列を渡して実行し、結果を$sqlResultに代入（成功すればtrueが代入される）
         $this->sqlResult = $stmt->execute($params);
         // ステートメントを返す
         return $stmt;

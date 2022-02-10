@@ -15,6 +15,7 @@ class TopicModel extends AbstractModel
     public int $likes;
     public int $dislikes;
     public string $user_id;
+    public string $nickname;
     public int $del_flg;
 
     // 先頭にアンダースコアがついていれば、何か特定のメソッドを通じて値を取得するものという意味
