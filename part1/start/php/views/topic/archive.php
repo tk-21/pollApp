@@ -14,7 +14,8 @@ function index($topics)
             // idをキーにしてtopicの編集画面に飛ぶようにする
             // このURLを引数として渡す
             $url = get_url('topic/edit?topic_id=' . $topic->id);
-            \partials\topic_list_item($topic, $url);
+            // 第３引数をtrueにすることで、公開非公開のラベルが表示される
+            \partials\topic_list_item($topic, $url, true);
         }
         ?>
     </ul>
