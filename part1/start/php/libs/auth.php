@@ -100,7 +100,8 @@ class Auth
     }
 
 
-    // ログインしているかどうかを判定する
+    // ログインしているかどうかを判定するメソッド
+    // 結果はtrueかfalseで返ってくる
     public static function isLogin()
     {
         try {
