@@ -49,8 +49,11 @@ try {
 
     // 動的にコントローラーを呼び出す処理
 
-    // $_SERVER['REQUEST_URI']で渡ってきたURLから、BASE_CONTEXT_PATHに一致する文字列（start/までのURL）を空文字で置き換える
-    $rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
+    // $_SERVER['REQUEST_URI']で渡ってきたURLを分ける
+    $url = parse_url(CURRENT_URI);
+
+    // $url['path']でパスの部分だけ取ってきたURLから、BASE_CONTEXT_PATHに一致する文字列（start/までのURL）を空文字で置き換える
+    $rpath = str_replace(BASE_CONTEXT_PATH, '', $url['path']);
 
     // リクエストメソッドを小文字に変換して取得
     $method = strtolower($_SERVER['REQUEST_METHOD']);
