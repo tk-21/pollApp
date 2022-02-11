@@ -4,22 +4,20 @@ namespace model;
 
 use lib\Msg;
 
-class TopicModel extends AbstractModel
+class CommentModel extends AbstractModel
 {
-    // topicsテーブルとusersテーブルを内部結合したテーブルから取ってきた値を、これらのプロパティに格納する
+    // commentsテーブルとusersテーブルを内部結合したテーブルから取ってきた値をこれらのプロパティに格納する
     public int $id;
-    public string $title;
-    public int $published;
-    public int $views;
-    public int $likes;
-    public int $dislikes;
+    public int $topic_id;
+    public int $agree;
+    public string $body;
     public string $user_id;
     public string $nickname;
     public int $del_flg;
 
     // 先頭にアンダースコアがついていれば、何か特定のメソッドを通じて値を取得するものという意味
     // セッションの情報はメソッドを通じて取得してくださいという意味
-    protected static $SESSION_NAME = '_topic';
+    protected static $SESSION_NAME = '_comment';
 
     // IDのバリデーション
     // public static function validateId($val)
@@ -50,10 +48,10 @@ class TopicModel extends AbstractModel
     // }
 
     // // インスタンスメソッドとしてはこのメソッドを使う
-    public function isValidId()
-    {
-        return true;
-    }
+    // public function isValidId()
+    // {
+    //     return static::validateId($this->id);
+    // }
 
 
     // // パスワードのバリデーション
