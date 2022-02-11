@@ -23,6 +23,7 @@ abstract class AbstractModel
         $_SESSION[static::$SESSION_NAME] = $val;
     }
 
+    
     public static function getSession()
     {
         // 何もとれてこなかったらnullを返す

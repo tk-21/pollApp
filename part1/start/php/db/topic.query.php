@@ -112,4 +112,49 @@ class TopicQuery
     //         ':nickname' => $user->nickname
     //     ]);
     // }
+
+
+    // controller\topic\detail で呼び出している
+    public static function incrementViewCount($topic)
+    {
+        if (!$topic->isValidId()) {
+            return false;
+        }
+
+        $db = new DataSource;
+
+        // topicsテーブルで指定したidのviewに１を足す
+        $sql = 'update topics set views = views + 1 where id = :id;';
+
+        return $db->execute($sql, [
+            ':id' => $topic->id
+        ]);
+    }
+
+
+    // ログインしているユーザー自身のトピックかどうかを判定するメソッド
+    public static function isUserOwnTopic($topic_id, $user)
+    {
+        // 渡ってきたtopic_idをstaticメソッドで検査し、userオブジェクトをインスタンスメソッドで検査
+        // どちらもtrueであれば後続の処理を実行する
+        // どちらかがfalseであれば、return falseが実行される
+        if (!(TopicModel::validateId($topic_id) && $user->isValidId())) {
+            return false;
+        }
+
+        $db = new DataSource;
+
+        // topicのidとuser_idの２つの条件で指定して、レコードが取れてくれば、そのユーザーが保持している記事と判断できるので編集可とする
+        $sql = '
+        select COUNT(1) FROM pollapp.topics t
+        WHERE t.id = :topic_id
+            AND t.user_id = :user_id
+            AND t.del_flg != 1;
+        ';
+        // 連想配列の形式で結果が返る
+        return $db->selectOne($sql, [
+            ':topic_id' => $topic_id,
+            ':user_id' => $user->id
+        ]);
+    }
 }
