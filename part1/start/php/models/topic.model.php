@@ -55,6 +55,12 @@ class TopicModel extends AbstractModel
         return true;
     }
 
+    public static function validateId($val)
+    {
+        return true;
+    }
+
+
 
     // // パスワードのバリデーション
     // public static function validatePwd($val)

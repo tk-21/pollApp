@@ -12,6 +12,7 @@ function index($topics)
         // 一つずつの投稿がtopic_list_itemに渡って、リストが形成される
         foreach ($topics as $topic) {
             // idをキーにしてtopicの編集画面に飛ぶようにする
+            // get_urlメソッドでフルパスを作成
             // このURLを引数として渡す
             $url = get_url('topic/edit?topic_id=' . $topic->id);
             // 第３引数をtrueにすることで、公開非公開のラベルが表示される

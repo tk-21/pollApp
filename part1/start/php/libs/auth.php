@@ -147,4 +147,16 @@ class Auth
             redirect('login');
         }
     }
+
+    // 編集権限があるかどうか確認するメソッド
+    public static function hasPermission() {
+        
+    }
+
+    public static function requirePermission() {
+
+
+        Msg::push(Msg::ERROR, '編集権限がありません。ログインして再度試してみてください。');
+        redirect('login');
+    }
 }
