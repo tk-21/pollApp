@@ -2,6 +2,7 @@
 
 namespace controller\topic\edit;
 
+use db\TopicQuery;
 use lib\Auth;
 use model\TopicModel;
 use model\UserModel;
@@ -23,4 +24,9 @@ function get()
     // ログイン中のユーザーが記事を編集できるかどうかのチェックする
     // userモデルに紐づくtopic->idであれば許可する
     Auth::requirePermission($topic->id, $user);
+
+    // idが格納された$topicを渡してそのトピックを取ってくる
+    $fetchedTopic = TopicQuery::fetchById($topic);
+
+    \view\topic\edit\index($fetchedTopic);
 }
