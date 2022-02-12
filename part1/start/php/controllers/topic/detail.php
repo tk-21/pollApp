@@ -24,8 +24,8 @@ function get()
     // topic_idが格納されたtopicオブジェクトを渡し、そのtopic_idに紐付くコメントを取ってくる
     $comments = CommentQuery::fetchByTopicId($topic);
 
-    // トピックが取れてこなかった場合は４０４ページにリダイレクト
-    if (!$fetchedTopic) {
+    // トピックが取れてこなかった場合、またはpublishedの値がfalseの場合（０の場合）は４０４ページにリダイレクト
+    if (empty($fetchedTopic) || !$fetchedTopic->published) {
         Msg::push(Msg::ERROR, 'トピックが見つかりません。');
         redirect('404');
     }

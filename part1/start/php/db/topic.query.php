@@ -64,8 +64,9 @@ class TopicQuery
     }
 
 
-    // 個別の記事を取ってくるメソッド
+    // idから個別の記事を取ってくるメソッド
     // controllerのdetail.phpで呼び出している
+    // controllerのedit.phpで呼び出している
     public static function fetchById($topic)
     {
         if (!$topic->isValidId()) {
@@ -75,6 +76,8 @@ class TopicQuery
         $db = new DataSource;
 
         // topicsテーブルとusersテーブルをinner joinで内部結合している
+        // 汎用性を持たせるためwhereの条件に t.published = 1 は入れない （公開非公開は関係なくトピックを取得する）
+        // DBに問い合わせるクエリに詳細な条件を書いてしまうと、そのメソッドを使い回すことができない
         $sql = '
             SELECT t.*, u.nickname FROM topics t
             inner join users u
@@ -82,7 +85,6 @@ class TopicQuery
             WHERE t.id = :id
             and t.del_flg != 1
             and u.del_flg != 1
-            and t.published = 1
             order by t.id DESC
             ';
         // 第3引数でDataSource::CLSを指定することにより、クラスの形式でデータを取得
@@ -133,6 +135,7 @@ class TopicQuery
 
 
     // ログインしているユーザー自身のトピックかどうかを判定するメソッド
+    // auth.phpのhasPermissionメソッドで呼ばれている
     public static function isUserOwnTopic($topic_id, $user)
     {
         // 渡ってきたtopic_idをstaticメソッドで検査し、userオブジェクトをインスタンスメソッドで検査
@@ -146,15 +149,18 @@ class TopicQuery
 
         // topicのidとuser_idの２つの条件で指定して、レコードが取れてくれば、そのユーザーが保持している記事と判断できるので編集可とする
         $sql = '
-        select COUNT(1) FROM pollapp.topics t
+        select COUNT(1) as count FROM pollapp.topics t
         WHERE t.id = :topic_id
             AND t.user_id = :user_id
             AND t.del_flg != 1;
         ';
         // 連想配列の形式で結果が返る
-        return $db->selectOne($sql, [
+        $result = $db->selectOne($sql, [
             ':topic_id' => $topic_id,
             ':user_id' => $user->id
         ]);
+
+        // 取得した結果が空でないかつcountが０でなかったらtrueを返す
+        return !empty($result) && $result['count'] != 0;
     }
 }
