@@ -9,7 +9,7 @@ function index($topic)
 
     <div class="bg-white p-4 shadow-sm mx-auto rounded">
         <form action="<?php echo CURRENT_URI; ?>" method="POST">
-            <?php //渡ってきたtopic_idをhiddenフィールドで送信しておく
+            <?php //トピックの内容を更新するときにPOSTでidを渡すため、渡ってきたtopic_idをhiddenフィールドで送信しておく
             ?>
             <input type="hidden" name="topic_id" value="<?php echo $topic->id; ?>">
             <div class="form-group">
@@ -20,6 +20,7 @@ function index($topic)
                 <label for="published">ステータス</label>
                 <select name="published" id="published" class="form-control">
                     <?php //selectedがついているものが、初期表示時に表示されるステータス
+                    // publishedがtrueかfalseかによって初期表示を分ける
                     ?>
                     <option value="1" <?php echo $topic->published ? 'selected' : ''; ?>>公開</option>
                     <option value="0" <?php echo $topic->published ? '' : 'selected'; ?>>非公開</option>
