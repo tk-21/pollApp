@@ -50,6 +50,6 @@ function route($rpath, $method)
         Msg::push(Msg::DEBUG, $e->getMessage());
         Msg::push(Msg::ERROR, '何かがおかしいようです。');
         // 404ページにとばす
-        require_once SOURCE_BASE . 'views/404.php';
+        redirect('404');
     }
 }
