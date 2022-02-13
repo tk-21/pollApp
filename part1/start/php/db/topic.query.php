@@ -163,4 +163,21 @@ class TopicQuery
         // 取得した結果が空でないかつcountが０でなかったらtrueを返す
         return !empty($result) && $result['count'] != 0;
     }
+
+
+    public static function update($topic)
+    {
+        // 値のチェック
+
+        $db = new DataSource;
+        // idをキーにしてpublishedとtitleを更新
+        $sql = 'update topics set published = :published, title = :title where id = :id';
+
+        // 登録に成功すれば、trueが返される
+        return $db->execute($sql, [
+            ':published' => $topic->published,
+            ':title' => $topic->title,
+            ':id' => $topic->id
+        ]);
+    }
 }
