@@ -31,7 +31,7 @@ function get()
     $fetchedTopic = TopicQuery::fetchById($topic);
 
     // トピックを渡してviewのindexを表示
-    \view\topic\edit\index($fetchedTopic);
+    \view\topic\edit\index($fetchedTopic, true);
 }
 
 

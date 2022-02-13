@@ -99,22 +99,6 @@ class TopicQuery
         return $result;
     }
 
-    // public static function insert($user)
-    // {
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values(:id, :pwd, :nickname)';
-
-    //     // パスワードはハッシュ化を行っておく
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
-
-    //     // 登録に成功すれば、trueが返される
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname
-    //     ]);
-    // }
-
 
     // controller\topic\detail で呼び出している
     public static function incrementViewCount($topic)
@@ -178,6 +162,22 @@ class TopicQuery
             ':published' => $topic->published,
             ':title' => $topic->title,
             ':id' => $topic->id
+        ]);
+    }
+
+
+    public static function insert($topic, $user)
+    {
+        // 値のチェック
+
+        $db = new DataSource;
+        $sql = 'insert into topics(title, published, user_id) values(:title, :published, :user_id)';
+
+        // 登録に成功すれば、trueが返される
+        return $db->execute($sql, [
+            ':title' => $topic->title,
+            ':published' => $topic->published,
+            ':user_id' => $user->id
         ]);
     }
 }
