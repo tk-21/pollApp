@@ -152,6 +152,18 @@ class TopicQuery
     public static function update($topic)
     {
         // 値のチェック
+        // DBに接続する前に必ずチェックは終わらせておく
+        // バリデーションがどれか一つでもfalseで返ってきたら、呼び出し元のedit.phpにfalseを返して登録失敗になる
+        if (
+            // ()の中が０の場合にはtrueになり、if文の中が実行される
+            // trueまたはfalseを返すメソッドを*の演算子でつなげると、１または０に変換される。これらをすべて掛け合わせたときに結果が０であれば、どれかのチェックがfalseで返ってきたことになる
+            !($topic->isValidId()
+                * $topic->isValidTitle()
+                * $topic->isValidPublished())
+        ) {
+            return false;
+        }
+
 
         $db = new DataSource;
         // idをキーにしてpublishedとtitleを更新
@@ -169,6 +181,18 @@ class TopicQuery
     public static function insert($topic, $user)
     {
         // 値のチェック
+        // DBに接続する前に必ずチェックは終わらせておく
+        // バリデーションがどれか一つでもfalseで返ってきたら、呼び出し元のedit.phpにfalseを返して登録失敗になる
+        if (
+            // ()の中が０の場合にはtrueになり、if文の中が実行される
+            // trueまたはfalseを返すメソッドを*の演算子でつなげると、１または０に変換される。これらをすべて掛け合わせたときに結果が０であれば、どれかのチェックがfalseで返ってきたことになる
+            !($user->isValidId()
+                * $topic->isValidTitle()
+                * $topic->isValidPublished())
+        ) {
+            return false;
+        }
+
 
         $db = new DataSource;
         $sql = 'insert into topics(title, published, user_id) values(:title, :published, :user_id)';

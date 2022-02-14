@@ -14,6 +14,16 @@ function get()
     // ログインしているかどうか確認（管理画面なのでログインは必須）
     Auth::requireLogin();
 
+    // セッションからデータを取ってきて変数に格納する。セッション上のデータは削除する
+    // 必ずデータを取得した時点で、データを削除しておく必要がある。そうしないと他の記事を選択したときに出てきてしまう。
+    $topic = TopicModel::getSessionAndFlush();
+
+    // データが取れてくれば、その値を画面表示し、処理を終了
+    if (!empty($topic)) {
+        \view\topic\edit\index($topic, true);
+        return;
+    }
+
     // TopicModelのインスタンスを作成
     $topic = new TopicModel;
 
@@ -65,13 +75,18 @@ function post()
         $is_success = false;
     }
 
-    // 更新に成功すれば、メッセージを出す
+    // trueの場合は、メッセージを出してarchiveに移動
     if ($is_success) {
         Msg::push(Msg::INFO, 'トピックの更新に成功しました。');
         redirect('topic/archive');
     } else {
         Msg::push(Msg::ERROR, 'トピックの更新に失敗しました。');
-        // 元の画面に戻す
+
+        // 登録に失敗した場合、入力した内容をセッションに保存する
+        TopicModel::setSession($topic);
+
+        // falseの場合は、メッセージを出して元の画面に戻す
+        // このときに再びgetメソッドが呼ばれる
         redirect(GO_REFERER);
     }
 }
