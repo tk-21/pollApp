@@ -19,102 +19,53 @@ class CommentModel extends AbstractModel
     // セッションの情報はメソッドを通じて取得してくださいという意味
     protected static $SESSION_NAME = '_comment';
 
-    // IDのバリデーション
-    // public static function validateId($val)
-    // {
-    //     // レスポンス
-    //     $res = true;
 
-    //     // 空文字が渡ってきた場合に注意文を表示する
-    //     if (empty($val)) {
-    //         Msg::push(Msg::ERROR, 'ユーザーIDを入力してください。');
-    //         // バリデートが失敗した場合にマークしておく
-    //         $res = false;
-    //     } else {
-    //         // 文字列の長さが11文字以上だったら
-    //         if (strlen($val) > 10) {
-    //             Msg::push(Msg::ERROR, 'ユーザーIDは10桁以下で入力してください。');
-    //             $res = false;
-    //         }
+    public function isValidAgree()
+    {
+        return static::validateAgree($this->agree);
+    }
 
-    //         // 小文字か大文字の半角英字もしくは数字にマッチしない場合
-    //         if (!is_alnum($val)) {
-    //             Msg::push(Msg::ERROR, 'ユーザーIDは半角英数字で入力してください。');
-    //             $res = false;
-    //         }
-    //     }
-    //     // エラーに引っかかった場合はfalseが返る
-    //     return $res;
-    // }
+    public static function validateAgree($val)
+    {
 
-    // // インスタンスメソッドとしてはこのメソッドを使う
-    // public function isValidId()
-    // {
-    //     return static::validateId($this->id);
-    // }
+        $res = true;
+
+        if (!isset($val)) {
+            Msg::push(Msg::ERROR, '賛成か反対か選択してください。');
+
+            // publishedが0、または1以外の時
+            if (!($val == 0 || $val == 1)) {
+                Msg::push(Msg::ERROR, '賛成か反対、どちらかの値を選択してください。');
+            }
+
+            $res = false;
+        }
+
+        return $res;
+    }
 
 
-    // // パスワードのバリデーション
-    // public static function validatePwd($val)
-    // {
-    //     $res = true;
+    public function isValidBody()
+    {
+        return static::validateBody($this->body);
+    }
 
-    //     if (empty($val)) {
+    public static function validateBody($val)
+    {
+        $res = true;
 
-    //         Msg::push(Msg::ERROR, 'パスワードを入力してください。');
-    //         $res = false;
-    //     } else {
+        if (mb_strlen($val) > 100) {
 
-    //         // 半角のみを数えるときはstrlenでOK
-    //         if (strlen($val) < 4) {
+            Msg::push(Msg::ERROR, 'コメントは100文字以内で入力してください。');
+            $res = false;
+        }
 
-    //             Msg::push(Msg::ERROR, 'パスワードは４桁以上で入力してください。');
-    //             $res = false;
-    //         }
-
-    //         if (!is_alnum($val)) {
-
-    //             Msg::push(Msg::ERROR, 'パスワードは半角英数字で入力してください。');
-    //             $res = false;
-    //         }
-    //     }
-
-    //     return $res;
-    // }
-
-    // // インスタンスメソッドとしてはこのメソッドを使う
-    // public function isValidPwd()
-    // {
-    //     return static::validatePwd($this->pwd);
-    // }
+        return $res;
+    }
 
 
-    // // ニックネームのバリデーション
-    // public static function validateNickname($val)
-    // {
-
-    //     $res = true;
-
-    //     if (empty($val)) {
-
-    //         Msg::push(Msg::ERROR, 'ニックネームを入力してください。');
-    //         $res = false;
-    //     } else {
-
-    //         // mb_strlenは半角でも全角でも文字数カウント分だけ返してくれるので、日本語をチェックするときはこの関数を使う
-    //         if (mb_strlen($val) > 10) {
-
-    //             Msg::push(Msg::ERROR, 'ニックネームは１０桁以下で入力してください。');
-    //             $res = false;
-    //         }
-    //     }
-
-    //     return $res;
-    // }
-
-    // // インスタンスメソッドとしてはこのメソッドを使う
-    // public function isValidNickname()
-    // {
-    //     return static::validateNickname($this->nickname);
-    // }
+    public function isValidTopicId()
+    {
+        return TopicModel::validateId($this->topic_id);
+    }
 }
