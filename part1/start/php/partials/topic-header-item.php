@@ -83,7 +83,10 @@ function comment_form($topic)
     ?>
         <form action="<?php the_url('topic/detail'); ?>" method="POST">
             <span class="h4">あなたは賛成？それとも反対？</span>
+
+            <?php //type="hidden"でtopic_idもPOST送信する ?>
             <input type="hidden" name="topic_id" value="<?php echo $topic->id; ?>">
+
             <div class="form-group">
                 <textarea class="w-100 border-light" name="body" id="body" rows="5"></textarea>
             </div>
