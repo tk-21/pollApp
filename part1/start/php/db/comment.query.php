@@ -11,7 +11,7 @@ class CommentQuery
     public static function fetchByTopicId($topic)
     {
         // 渡ってきたトピックオブジェクトのidが正しいか確認
-        if(!$topic->isValidId()) {
+        if (!$topic->isValidId()) {
             return false;
         }
 
@@ -42,19 +42,37 @@ class CommentQuery
         return $result;
     }
 
-    // public static function insert($user)
-    // {
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values(:id, :pwd, :nickname)';
 
-    //     // パスワードはハッシュ化を行っておく
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
+    public static function insert($comment)
+    {
+        // 値のチェック
+        // DBに接続する前に必ずチェックは終わらせておく
+        // バリデーションがどれか一つでもfalseで返ってきたら、呼び出し元にfalseを返して登録失敗になる
+        if (
+            // ()の中が０の場合にはtrueになり、if文の中が実行される
+            // trueまたはfalseを返すメソッドを*の演算子でつなげると、１または０に変換される。これらをすべて掛け合わせたときに結果が０であれば、どれかのチェックがfalseで返ってきたことになる
+            !($comment->isValidTopicId()
+                * $comment->isValidBody()
+                * $comment->isValidAgree())
+        ) {
+            return false;
+        }
 
-    //     // 登録に成功すれば、trueが返される
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname
-    //     ]);
-    // }
+        $db = new DataSource;
+
+        $sql = '
+        insert into comments
+            (topic_id, agree, body, user_id)
+        values
+            (:topic_id, :agree, :body, :user_id)
+        ';
+
+        // 登録に成功すれば、trueが返される
+        return $db->execute($sql, [
+            ':topic_id' => $comment->topic_id,
+            ':agree' => $comment->agree,
+            ':body' => $comment->body,
+            ':user_id' => $comment->user_id
+        ]);
+    }
 }

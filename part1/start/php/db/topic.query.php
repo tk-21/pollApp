@@ -193,7 +193,6 @@ class TopicQuery
             return false;
         }
 
-
         $db = new DataSource;
         $sql = 'insert into topics(title, published, user_id) values(:title, :published, :user_id)';
 
@@ -202,6 +201,36 @@ class TopicQuery
             ':title' => $topic->title,
             ':published' => $topic->published,
             ':user_id' => $user->id
+        ]);
+    }
+
+    public static function incrementLikesOrDislikes($comment)
+    {
+        // 値のチェック
+        // DBに接続する前に必ずチェックは終わらせておく
+        // バリデーションがどれか一つでもfalseで返ってきたら、呼び出し元のdetail.phpにfalseを返して登録失敗になる
+        if (
+            // ()の中が０の場合にはtrueになり、if文の中が実行される
+            // trueまたはfalseを返すメソッドを*の演算子でつなげると、１または０に変換される。これらをすべて掛け合わせたときに結果が０であれば、どれかのチェックがfalseで返ってきたことになる
+            !($comment->isValidTopicId()
+                * $comment->isValidAgree())
+        ) {
+            return false;
+        }
+
+        $db = new DataSource;
+
+        // 条件によってupdate文を切り替える
+        // agreeが１であればlikeに１を足し、０であればdislikeに１を足す
+        if ($comment->agree) {
+            $sql = 'update topics set likes = likes + 1 where id = :topic_id';
+        } else {
+            $sql = 'update topics set dislikes = dislikes + 1 where id = :topic_id';
+        }
+
+        // 登録に成功すれば、trueが返される
+        return $db->execute($sql, [
+            ':topic_id' => $comment->topic_id
         ]);
     }
 }

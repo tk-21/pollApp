@@ -2,10 +2,15 @@
 
 namespace controller\topic\detail;
 
+use Throwable;
 use db\CommentQuery;
+use db\DataSource;
 use db\TopicQuery;
+use lib\Auth;
 use lib\Msg;
+use model\CommentModel;
 use model\TopicModel;
+use model\UserModel;
 
 function get()
 {
@@ -32,4 +37,39 @@ function get()
 
     // トピックが取れてきた場合、viewのdetailのindexにtopicオブジェクトとcommentsオブジェクトを渡して実行
     \view\topic\detail\index($fetchedTopic, $comments);
+}
+
+// コメントをフォームから送信するメソッド
+function post()
+{
+    // ログインしていないとフォームが出てこないので、ますログインを要求する
+    Auth::requireLogin();
+
+    // コメントモデルの初期化
+    $comment = new CommentModel;
+
+    // postで飛んできた値を格納する
+    $comment->topic_id = get_param('topic_id', null);
+    $comment->agree = get_param('agree', null);
+    $comment->body = get_param('body', null);
+
+    // ユーザー情報を取得する
+    $user = UserModel::getSession();
+
+    // user_idをコメントのuser_idに入れる
+    $comment->user_id = $user->id;
+
+    try {
+        // ２つのテーブルに更新を投げるのでトランザクションを使用する
+        // DB接続
+        $db = new DataSource;
+        $db->begin();
+
+        // コメントのオブジェクトを渡す
+        TopicQuery::incrementLikesOrDislikes($comment);
+        CommentQuery::insert($comment);
+
+    } catch(Throwable $e) {
+
+    }
 }
