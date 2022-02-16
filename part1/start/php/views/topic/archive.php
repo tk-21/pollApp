@@ -5,6 +5,7 @@ namespace view\topic\archive;
 // 引数でtopicの配列が渡ってくる
 function index($topics)
 {
+    $topics = escape($topics);
 ?>
     <h1 class="h2 mb-3">過去の投稿</h1>
     <ul class="container">

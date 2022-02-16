@@ -5,6 +5,9 @@ namespace view\topic\detail;
 // トピックとコメントが渡ってくる
 function index($topic, $comments)
 {
+    $topic = escape($topic);
+    $comments = escape($comments);
+
     // ここでトピックを１件表示
     // トップページから呼ばれるわけではないので、第２引数はfalse（詳細ページへのリンクは付けない）
     \partials\topic_header_item($topic, false);
