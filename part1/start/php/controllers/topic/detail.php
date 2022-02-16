@@ -65,11 +65,28 @@ function post()
         $db = new DataSource;
         $db->begin();
 
-        // コメントのオブジェクトを渡す
-        TopicQuery::incrementLikesOrDislikes($comment);
-        CommentQuery::insert($comment);
+        // コメントのオブジェクトを渡して実行
+        $is_success = TopicQuery::incrementLikesOrDislikes($comment);
 
-    } catch(Throwable $e) {
-
+        // 賛成反対のインクリメントが成功して、かつコメント入力がされていれば、インサートのクエリを実行する
+        if ($is_success && !empty($comment->body)) {
+            $is_success = CommentQuery::insert($comment);
+        }
+    } catch (Throwable $e) {
+        Msg::push(Msg::DEBUG, $e->getMessage());
+        $is_success = false;
+    } finally {
+        // 成功した場合はコミットを行い、それ以外の場合はロールバックで切り戻しを行う
+        // finallyブロックで行うことによって、不整合なデータが登録されるのを防ぐ
+        if ($is_success) {
+            $db->commit();
+            Msg::push(Msg::INFO, 'コメントの登録に成功しました。');
+        } else {
+            $db->rollback();
+            Msg::push(Msg::ERROR, 'コメントの登録に失敗しました。');
+        }
     }
+
+    // 処理が終了したら画面を移動させる
+    redirect('topic/detail?topic_id=' . $comment->topic_id);
 }
