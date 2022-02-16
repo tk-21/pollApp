@@ -43,6 +43,7 @@ class CommentQuery
     }
 
 
+    // controller\topic\detailのpostメソッド内で呼び出している
     public static function insert($comment)
     {
         // 値のチェック

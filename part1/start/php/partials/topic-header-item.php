@@ -99,7 +99,7 @@ function comment_form($topic)
                             <label for="agree" class="form-check-label">賛成</label>
                         </div>
                         <div class="form-check-inline">
-                            <input class="form-check-input" type="radio" id="disagree" name="disagree" value="0">
+                            <input class="form-check-input" type="radio" id="disagree" name="agree" value="0">
                             <label for="disagree" class="form-check-label">反対</label>
                         </div>
 
