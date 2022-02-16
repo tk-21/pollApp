@@ -5,6 +5,8 @@ namespace view\home;
 // 引数でトピックの配列が渡ってくる
 function index($topics)
 {
+    $topics = escape($topics);
+
     // 配列の先頭だけ切り出す
     // $topicsの配列の一番最初だけ$topicに入り、残りのものは$topicsに格納される
     $topic = array_shift($topics);

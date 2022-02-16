@@ -15,6 +15,7 @@ function get_param($key, $default_val, $is_post = true)
     return $array[$key] ?? $default_val;
 }
 
+
 // 渡ってきた値が含まれるURLに遷移させるメソッド
 function redirect($path)
 {
@@ -30,11 +31,13 @@ function redirect($path)
     die();
 }
 
+
 // get_urlで取得したURLを画面表示するメソッド
 function the_url($path)
 {
     echo get_url($path);
 }
+
 
 // 渡ってきた値をstartまでのパスの後ろにつなげてURLを返すメソッド
 function get_url($path)
@@ -43,8 +46,36 @@ function get_url($path)
     return BASE_CONTEXT_PATH . trim($path, '/');
 }
 
+
 // 小文字か大文字の半角英字もしくは数字にマッチするかどうかを判定するメソッド
 function is_alnum($val)
 {
     return preg_match("/^[a-zA-Z0-9]+$/", $val);
+}
+
+
+// 再帰的プログラミング
+// 配列 → オブジェクト → 文字列と、中に中に入っていって
+function escape($data)
+{
+    // 配列の場合
+    if (is_array($data)) {
+        foreach ($data as $prop => $val) {
+            // ここの$valはオブジェクトなので次はelseifブロックに移る
+            $data[$prop] = escape($val);
+        }
+        return $data;
+
+        // オブジェクトの場合
+    } elseif (is_object($data)) {
+        foreach ($data as $prop => $val) {
+            // ここの$valは文字列なので次はelseブロックに移る
+            $data->$prop = escape($val);
+        }
+        return $data;
+
+        // 配列でもオブジェクトでもない場合
+    } else {
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    }
 }
