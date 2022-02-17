@@ -1,4 +1,5 @@
 <?php
+
 namespace view\login;
 // HTMLを関数で囲んでおくと、その関数を呼んだときにHTMLの内容が出力されるようになる
 function index()
@@ -16,11 +17,11 @@ function index()
             <form action="<?php echo CURRENT_URI; ?>" method="post">
                 <div class="form-group">
                     <label for="id">ユーザーID</label>
-                    <input id="id" type="text" name="id" class="form-control">
+                    <input id="id" type="text" name="id" class="form-control" autofocus required maxlength="10" pattern="[a-zA-Z0-9]+">
                 </div>
                 <div class="form-group">
                     <label for="pwd">パスワード</label>
-                    <input id="pwd" type="password" name="pwd" class="form-control">
+                    <input id="pwd" type="password" name="pwd" class="form-control" required minlength="4" pattern="[a-zA-Z0-9]+">
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
