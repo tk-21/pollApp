@@ -59,7 +59,7 @@ try {
     // リクエストメソッドを小文字に変換して取得
     $method = strtolower($_SERVER['REQUEST_METHOD']);
 
-    // 渡すパスによって呼び出すコントローラーが変わる
+    // 渡ってくるパスによってコントローラーを呼び分ける
     // getかpostかによって実行されるメソッドが変わる
     route($rpath, $method);
 
