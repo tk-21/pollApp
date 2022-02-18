@@ -14,10 +14,10 @@ function index()
         <div class="login-form bg-white p-4 shadow-sm mx-auto rounded">
 
             <!-- 同じURLに対してPOSTメソッドを送る -->
-            <form action="<?php echo CURRENT_URI; ?>" method="post">
+            <form action="<?php echo CURRENT_URI; ?>" method="post" novalidate>
                 <div class="form-group">
                     <label for="id">ユーザーID</label>
-                    <input id="id" type="text" name="id" class="form-control" autofocus required maxlength="10" pattern="[a-zA-Z0-9]+">
+                    <input id="id" type="text" name="id" class="form-control validate-target" autofocus required maxlength="10" pattern="[a-zA-Z0-9]+">
                 </div>
                 <div class="form-group">
                     <label for="pwd">パスワード</label>
