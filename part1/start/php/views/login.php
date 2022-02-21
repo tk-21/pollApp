@@ -14,8 +14,7 @@ function index()
         </div>
         <div class="login-form bg-white p-4 shadow-sm mx-auto rounded">
 
-            <form class="validate-form" action="<?php echo CURRENT_URI; //同じURLに対してPOSTメソッドを送る
-                                                ?>" method="post" novalidate>
+            <form class="validate-form" action="<?php echo CURRENT_URI; ?>" method="post" novalidate>
                 <div class="form-group">
                     <label for="id">ユーザーID</label>
                     <input id="id" type="text" name="id" class="form-control validate-target" autofocus required minlength="4" maxlength="10" pattern="[a-zA-Z0-9]+">
