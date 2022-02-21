@@ -9,13 +9,15 @@ function index($topic, $is_edit)
     <h1 class="h2 mb-3"><?php echo $header_title; ?></h1>
 
     <div class="bg-white p-4 shadow-sm mx-auto rounded">
-        <form action="<?php echo CURRENT_URI; ?>" method="POST">
-            <?php //トピックの内容を更新するときにPOSTでidを渡すため、渡ってきたtopic_idをhiddenフィールドで送信しておく
+
+        <form class="validate-form" action="<?php echo CURRENT_URI; ?>" method="POST" novalidate>
+            <?php //トピックの内容を更新するときにPOSTでidを送信するため、渡ってきたtopic_idをhiddenフィールドに入れておく
             ?>
             <input type="hidden" name="topic_id" value="<?php echo $topic->id; ?>">
             <div class="form-group">
                 <label for="title">タイトル</label>
-                <input type="text" id="title" name="title" value="<?php echo $topic->title; ?>" class="form-control">
+                <input type="text" id="title" name="title" value="<?php echo $topic->title; ?>" class="form-control validate-target" required maxlength="30" autofocus>
+                <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="published">ステータス</label>
@@ -37,6 +39,7 @@ function index($topic, $is_edit)
 
             </div>
         </form>
+
     </div>
 
 
