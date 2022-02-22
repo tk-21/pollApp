@@ -4,6 +4,39 @@ namespace db;
 
 use PDO;
 
+class PDOSingleton
+{
+    // staticにすることによって、$singletonを取れば必ず同じフィールドのものが取れてくる
+    private static $singleton;
+
+    // privateなので外部から呼び出すことはできない
+    private function __construct($dsn, $username, $password)
+    {
+        // データベースへのコネクションを取ってくる
+        $this->conn = new PDO($dsn, $username, $password);
+        //デフォルトのFETCH_MODEをFETCH_ASSOCに設定
+        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        // 例外が発生したときに、PDOExceptionの例外を投げてくれるようにする
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // DBのプリペアードステートメントの機能を使うようにし、PDOの機能は使わないようにする設定↓
+        $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    }
+
+    // このメソッド経由でインスタンスを取ってくる
+    // このメソッドを実行することによって、$singletonのフィールドにデータベースへのコネクションが保持される
+    // ２回目以降にアクセスされたときにはif文の中は実行されないので、必ず同じDBへのコネクションが取れてくる
+    public static function getInstance($dsn, $username, $password)
+    {
+        // $singletonがnullであればインスタンス化を行って$singletonに格納する
+        if (!isset(self::$singleton)) {
+            $instance = new PDOSingleton($dsn, $username, $password);
+            self::$singleton = $instance->conn;
+        }
+        return self::$singleton;
+    }
+}
+
+
 class DataSource
 {
 
@@ -18,13 +51,7 @@ class DataSource
     {
 
         $dsn = "mysql:host={$host};port={$port};dbname={$dbName};";
-        $this->conn = new PDO($dsn, $username, $password);
-        //デフォルトのFETCH_MODEをFETCH_ASSOCに設定
-        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        // 例外が発生したときに、PDOExceptionの例外を投げてくれるようにする
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // DBのプリペアードステートメントの機能を使うようにし、PDOの機能は使わないようにする設定↓
-        $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->conn = PDOSingleton::getInstance($dsn, $username, $password);
     }
 
     // データを複数行取ってくるメソッド
