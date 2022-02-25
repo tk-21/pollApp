@@ -52,8 +52,8 @@ class Msg extends AbstractModel
                 foreach ($msgs as $msg) {
                     echo "<div class='alert $color'>{$msg}</div>";
                 }
-                echo '</div>';
             }
+            echo '</div>';
         } catch (Throwable $e) {
             Msg::push(Msg::DEBUG, $e->getMessage());
             // メッセージを表示させて改修がしやすいようにしておく
